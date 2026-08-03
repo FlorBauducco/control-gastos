@@ -6,18 +6,25 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
+import { useBudget } from "../hook/useBudget";
+import { ExpenseForm } from "./ExpenseForm";
 
 export default function ExpenseModal() {
+  const { state, dispatch } = useBudget();
   return (
     <>
       <div className="fixed right-5 bottom-5 flex items-center justify-center">
-        <button type="button">
+        <button type="button" onClick={() => dispatch({ type: "show-modal" })}>
           <PlusCircleIcon className="w-16 h-16 text-[#0F0E47] rounded-full" />
         </button>
       </div>
 
-      <Transition appear show={false} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={() => {}}>
+      <Transition appear show={state.modal} as={Fragment}>
+        <Dialog
+          as="div"
+          className="relative z-10"
+          onClose={() => dispatch({ type: "close-modal" })}
+        >
           <TransitionChild
             as={Fragment}
             enter="ease-out duration-300"
@@ -41,7 +48,9 @@ export default function ExpenseModal() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <DialogPanel className="w-full max-w-3xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"></DialogPanel>
+                <DialogPanel className="w-full max-w-3xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                  <ExpenseForm />
+                </DialogPanel>
               </TransitionChild>
             </div>
           </div>
