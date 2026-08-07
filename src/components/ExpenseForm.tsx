@@ -2,12 +2,17 @@ import { categories } from "../data/categories";
 import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
-
-type ValuePiece = Date | null;
-
-export type Value = ValuePiece | [ValuePiece, ValuePiece];
+import { useState } from "react";
+import type { DraftExpense } from "../types";
 
 export const ExpenseForm = () => {
+  const [expense, setExpense] = useState<DraftExpense>({
+    amount: 0,
+    expenseName: "",
+    category: "",
+    date: new Date(),
+  });
+
   return (
     <form className="space-y-5">
       <legend className="uppercase text-center text-2xl font-black border-b-4 border-[#8686AC] py-2">
@@ -24,6 +29,7 @@ export const ExpenseForm = () => {
           placeholder="Añade Nombre del gasto"
           className="p-2 bg-slate-100"
           name="expenseName"
+          value={expense.expenseName}
         />
       </div>
 
@@ -37,6 +43,7 @@ export const ExpenseForm = () => {
           placeholder="Añade Cantidad del gasto: ej. 300"
           className="bg-slate-100 p-2"
           name="amount"
+          value={expense.amount}
         />
       </div>
 
@@ -44,7 +51,12 @@ export const ExpenseForm = () => {
         <label htmlFor="category" className="text-xl">
           Categoría:
         </label>
-        <select name="category" id="category" className="bg-slate-100 p-2">
+        <select
+          name="category"
+          id="category"
+          className="bg-slate-100 p-2"
+          value={expense.category}
+        >
           <option value="">--- Seleccione ---</option>
           {categories.map((category) => (
             <option key={category.id} value={category.id}>
@@ -58,7 +70,10 @@ export const ExpenseForm = () => {
         <label htmlFor="amount" className="text-xl">
           Fecha:
         </label>
-        <DatePicker className="bg-slate-100 p-2 border-0" />
+        <DatePicker
+          className="bg-slate-100 p-2 border-0"
+          value={expense.date}
+        />
       </div>
 
       <input
