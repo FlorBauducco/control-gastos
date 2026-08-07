@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 export type Expense = {
   id: string;
   expenseName: string;
@@ -16,4 +18,8 @@ export type Category = {
   id: string;
   name: string;
   icon: string;
+};
+
+export type ErrorMessageProps = {
+  children: ReactNode;
 };
