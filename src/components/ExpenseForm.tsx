@@ -8,16 +8,23 @@ import { ErrorMessage } from "./ErrorMessage";
 import { useBudget } from "../hook/useBudget";
 
 export const ExpenseForm = () => {
-  const [expense, setExpense] = useState<DraftExpense>({
-    amount: 0,
-    expenseName: "",
-    category: "",
-    date: new Date(),
+  const { dispatch, state } = useBudget();
+
+  const [expense, setExpense] = useState<DraftExpense>(() => {
+    const editingExpense = state.expenses.find(
+      (currentExpense) => currentExpense.id === state.editingId,
+    );
+    return (
+      editingExpense ?? {
+        amount: 0,
+        expenseName: "",
+        category: "",
+        date: new Date(),
+      }
+    );
   });
 
   const [error, setError] = useState("");
-
-  const { dispatch } = useBudget();
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>,
@@ -45,9 +52,15 @@ export const ExpenseForm = () => {
       setError("Todos los campos son obligatorios");
       return;
     }
-    //Agregar un nuevo gasto
-
-    dispatch({ type: "add-expense", payload: { expense } });
+    //Agregar un nuevo gasto o actualizar el gasto
+    if (state.editingId) {
+      dispatch({
+        type: "update-expense",
+        payload: { expense: { id: state.editingId, ...expense } },
+      });
+    } else {
+      dispatch({ type: "add-expense", payload: { expense } });
+    }
 
     //Reiniciar el state
     setExpense({
