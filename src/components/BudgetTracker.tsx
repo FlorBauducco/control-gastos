@@ -10,7 +10,7 @@ export const BudgetTracker = () => {
       <div className="flex flex-col justify-center items-center gap-8">
         <button
           type="button"
-          className="bg-[#8686AC] w-full p-2 text-white uppercase font-bold rounded-lg "
+          className="bg-[#8686AC] w-full p-2 text-white uppercase font-bold rounded-lg cursor-pointer "
         >
           Resetear App
         </button>
