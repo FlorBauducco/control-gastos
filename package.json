@@ -17,6 +17,7 @@
     "prop-types": "^15.8.1",
     "react": "^19.2.7",
     "react-calendar": "^6.0.1",
+    "react-circular-progressbar": "^2.2.0",
     "react-date-picker": "^12.1.0",
     "react-dom": "^19.2.7",
     "react-swipeable-list": "^1.10.0",

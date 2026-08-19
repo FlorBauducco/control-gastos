@@ -8,6 +8,8 @@ import {
 type BudgetContextProps = {
   state: BudgetState;
   dispatch: ActionDispatch<[action: BudgetActions]>;
+  totalExpenses: number;
+  remainingBudget: number;
 };
 
 //Context es tener la accion de un estado global

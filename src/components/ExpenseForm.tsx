@@ -8,7 +8,7 @@ import { ErrorMessage } from "./ErrorMessage";
 import { useBudget } from "../hook/useBudget";
 
 export const ExpenseForm = () => {
-  const { dispatch, state } = useBudget();
+  const { dispatch, state, remainingBudget } = useBudget();
 
   const [expense, setExpense] = useState<DraftExpense>(() => {
     const editingExpense = state.expenses.find(
@@ -22,6 +22,13 @@ export const ExpenseForm = () => {
         date: new Date(),
       }
     );
+  });
+
+  const [previousAmount] = useState(() => {
+    const editingExpense = state.expenses.find(
+      (currentExpense) => currentExpense.id === state.editingId,
+    );
+    return editingExpense?.amount ?? 0;
   });
 
   const [error, setError] = useState("");
@@ -52,6 +59,13 @@ export const ExpenseForm = () => {
       setError("Todos los campos son obligatorios");
       return;
     }
+
+    //Validar que no me pase de presupuesto
+    if (expense.amount - previousAmount > remainingBudget) {
+      setError("Presupuesto Alacanzado");
+      return;
+    }
+
     //Agregar un nuevo gasto o actualizar el gasto
     if (state.editingId) {
       dispatch({
